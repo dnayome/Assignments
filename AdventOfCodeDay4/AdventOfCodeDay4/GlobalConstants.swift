@@ -12,4 +12,7 @@ struct Constants {
     static let asciiValueAboveCharactersRange = 122
     static let stringWithSpace = " "
     static let emptyString = ""
+    static let inputDelimiter = "\n"
+    static let parsingDelimiter = "-"
+
 }

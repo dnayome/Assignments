@@ -116,7 +116,7 @@ class ViewController: NSViewController {
         var pharsedArray = Array<Array<String>>()
         for item in InputList {
             if item != Constants.emptyString {
-                let componentsInItem:Array = item.components(separatedBy:"-")
+                let componentsInItem:Array = item.components(separatedBy: Constants.parsingDelimiter)
                 pharsedArray.append(componentsInItem)
             }
         }
@@ -130,9 +130,8 @@ class ViewController: NSViewController {
             if content == Constants.emptyString {
                 return []
             }
-            return content.components(separatedBy: "\n")
+            return content.components(separatedBy: Constants.inputDelimiter)
         } catch {
-            print("Error in reading file")
             return []
         }
     }

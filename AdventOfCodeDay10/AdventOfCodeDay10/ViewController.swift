@@ -69,9 +69,8 @@ class ViewController: NSViewController {
             if content == Constants.emptyString {
                 return []
             }
-            return content.components(separatedBy: "\n")
+            return content.components(separatedBy: Constants.inputDelimiter)
         } catch {
-            print("Error in reading file")
             return []
         }
     }
@@ -86,7 +85,7 @@ class ViewController: NSViewController {
     func parseTheInput(fileConentsArray: [String]) -> Bool {
         for instructionLine in fileConentsArray {
             if instructionLine != Constants.emptyString {
-                let parseIntoWords = instructionLine.components(separatedBy: " ")
+                let parseIntoWords = instructionLine.components(separatedBy: Constants.stringWithSpace)
                 if(parseIntoWords[0] == Constants.kStringBot)
                 {
                     guard let botId = Int(parseIntoWords[1]) else {

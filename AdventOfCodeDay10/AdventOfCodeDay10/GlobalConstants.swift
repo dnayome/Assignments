@@ -12,4 +12,7 @@ struct Constants {
     static let kStringBot = "bot"
     static let defaultValue = -1
     static let emptyString = ""
+    static let inputDelimiter = "\n"
+    static let stringWithSpace = " "
+
 }

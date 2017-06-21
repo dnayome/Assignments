@@ -18,4 +18,7 @@ struct Constants {
     static let totalCardinalDirections = 4
     static let instructionTakeLeft = "L"
     static let emptyString = ""
+    static let inputDelimiter = ", "
+    static let stringSeparator = ","
+
 }

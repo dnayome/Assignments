@@ -19,7 +19,6 @@ class ViewController: NSViewController {
             
             let distance = calculateDistance(fromInputList: arrayOfFileContents)
             print("Distance from landing point to the headquarters is \(distance) blocks")
-            
             part1ResultTextField?.stringValue = String(distance)
             
             let revisitedDistance = findRevisitedPath(fromInputList: arrayOfFileContents)
@@ -36,7 +35,7 @@ class ViewController: NSViewController {
             if content == Constants.emptyString {
                 return []
             }
-            return content.components(separatedBy: ", ")
+            return content.components(separatedBy: Constants.inputDelimiter)
         } catch {
             return []
         }
@@ -71,7 +70,7 @@ class ViewController: NSViewController {
             
             for _ in 0..<Int(commandReceived.numberOfBlocksToMove) {
                 let calculatedLocation  = distanceTravelled(directionFacing: directionFacing, numberOfBlocksToMove: 1, previousPoint: point)
-                let newLocation = String(describing: calculatedLocation.x) + "," + String(describing: calculatedLocation.y)
+                let newLocation = String(describing: calculatedLocation.x) + Constants.stringSeparator + String(describing: calculatedLocation.y)
                 point = calculatedLocation
                 if !visited.contains(newLocation) {
                     visited.insert(newLocation)
