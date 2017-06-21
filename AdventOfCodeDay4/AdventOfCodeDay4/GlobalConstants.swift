@@ -14,5 +14,7 @@ struct Constants {
     static let emptyString = ""
     static let inputDelimiter = "\n"
     static let parsingDelimiter = "-"
+    static let openSquareBrace = "["
+    static let closedSquareBrace = "]"
 
 }

@@ -40,10 +40,10 @@ class ViewController: NSViewController {
             //Get the last element
             let lastElement: String = stringPharsed[stringPharsed.index(before: stringPharsed.endIndex)] as! String
             //parse the string to get sector Id
-            let sectorId = lastElement.components(separatedBy: "[")[0]
+            let sectorId = lastElement.components(separatedBy: Constants.openSquareBrace)[0]
             //parse the string to get check sum
-            var checkSum = lastElement.components(separatedBy: "[")[1]
-            checkSum = checkSum.components(separatedBy: "]")[0]
+            var checkSum = lastElement.components(separatedBy: Constants.openSquareBrace)[1]
+            checkSum = checkSum.components(separatedBy: Constants.closedSquareBrace)[0]
             
             //Call a function to get the number of times the character exists.
             var charactersCountArray = getCountOfCharacters(arrayOfStrings: stringPharsed as! [String])
@@ -85,7 +85,7 @@ class ViewController: NSViewController {
             //Get the last element
             let lastElement: String = words[words.index(before: words.endIndex)] as! String
             //parse the string to get sector Id
-            let sectorId = Int(lastElement.components(separatedBy: "[")[0])
+            let sectorId = Int(lastElement.components(separatedBy: Constants.openSquareBrace)[0])
             //parse the string to get check sum
             let shiftBy: Int = sectorId! % Constants.countOfAlphabets
             var convertedString = Constants.emptyString
