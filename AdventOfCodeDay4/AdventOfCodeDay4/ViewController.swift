@@ -34,8 +34,7 @@ class ViewController: NSViewController {
     
     //MARK: Methods to solve Part 1 and Part 2 of the puzzle
     //Function is used to find out which is a real room and add the sector ids of the real rooms and return the total sector id
-    func findRealRoomsAndAddSectorIdFor(parsedStrings: [Array<Any>]) -> Int
-    {
+    func findRealRoomsAndAddSectorIdFor(parsedStrings: [Array<Any>]) -> Int {
         var sumOfSectorId = 0
         for stringPharsed in parsedStrings {
             //Get the last element
@@ -161,8 +160,7 @@ class ViewController: NSViewController {
         return dictionaryToFrame
     }
     
-    func filterCharactersWhichHaveGreaterValue(charactersDict : [String:Int]) -> [String]
-    {
+    func filterCharactersWhichHaveGreaterValue(charactersDict : [String:Int]) -> [String]{
         var greatestValue = 0
         var filteredChars = [String]()
         
@@ -181,8 +179,6 @@ class ViewController: NSViewController {
         }
         return filteredChars
     }
-    
-    
-    
+
 }
 

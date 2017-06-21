@@ -17,12 +17,12 @@ class ViewController: NSViewController {
         if let filePath = Bundle.main.path(forResource: "Input", ofType: "txt") {
             let arrayOfFileContents = readContentsOfFile(fromPath: filePath)
             
-            let distance = calculateDistance(inputList: arrayOfFileContents)
+            let distance = calculateDistance(fromInputList: arrayOfFileContents)
             print("Distance from landing point to the headquarters is \(distance) blocks")
             
             part1ResultTextField?.stringValue = String(distance)
             
-            let revisitedDistance = findRevisitedPath(inputList: arrayOfFileContents)
+            let revisitedDistance = findRevisitedPath(fromInputList: arrayOfFileContents)
             print("Distance revisited is \(revisitedDistance)")
             part2ResultTextField?.stringValue = String(revisitedDistance)
             
@@ -43,15 +43,14 @@ class ViewController: NSViewController {
     }
     
     //MARK: Evaluation Methods for Part 1 and Part 2
-    func calculateDistance(inputList: [String]) -> Int
-    {
+    func calculateDistance(fromInputList: [String]) -> Int {
         var directionFacing = directions.north.rawValue
         var point: CGPoint = CGPoint()
         
-        for instruction in inputList {
+        for instruction in fromInputList {
             let commandReceived = parse(theInstruction: instruction)
             
-            directionFacing = findDirectionFacedAfterExecuting(commandToMove: commandReceived.commandToMove, currentFacingDirection: directionFacing)
+            directionFacing = findDirectionFacedAfterExecuting(commandToMove: commandReceived.commandToMove, currentDirection: directionFacing)
             
             let calculatedValue = distanceTravelled(directionFacing: directionFacing, numberOfBlocksToMove: CGFloat(commandReceived.numberOfBlocksToMove), previousPoint: point)
             point.x = calculatedValue.x
@@ -60,15 +59,15 @@ class ViewController: NSViewController {
         return Int(abs(point.x) + abs(point.y))
     }
     
-    func findRevisitedPath(inputList: [String]) -> Int {
+    func findRevisitedPath(fromInputList: [String]) -> Int {
         var directionFacing = directions.north.rawValue
         var point: CGPoint = CGPoint()
         var visited: Set = Set<String>()
         
-        outer: for instruction in inputList {
+        outer: for instruction in fromInputList {
             let commandReceived = parse(theInstruction: instruction)
             
-            directionFacing = findDirectionFacedAfterExecuting(commandToMove: commandReceived.commandToMove, currentFacingDirection: directionFacing)
+            directionFacing = findDirectionFacedAfterExecuting(commandToMove: commandReceived.commandToMove, currentDirection: directionFacing)
             
             for _ in 0..<Int(commandReceived.numberOfBlocksToMove) {
                 let calculatedLocation  = distanceTravelled(directionFacing: directionFacing, numberOfBlocksToMove: 1, previousPoint: point)
@@ -83,8 +82,8 @@ class ViewController: NSViewController {
     }
     
     //MARK: Evaluation methods for solving the puzzles
-    func findDirectionFacedAfterExecuting(commandToMove: Character, currentFacingDirection: Int) -> Int {
-        var directionFromInstruction = currentFacingDirection
+    func findDirectionFacedAfterExecuting(commandToMove: Character, currentDirection: Int) -> Int {
+        var directionFromInstruction = currentDirection
         if commandToMove == Character(Constants.instructionTakeLeft){
             directionFromInstruction -= 1;
             if directionFromInstruction < 0 {
@@ -94,8 +93,7 @@ class ViewController: NSViewController {
         return directionFromInstruction
     }
     
-    func distanceTravelled(directionFacing: Int,numberOfBlocksToMove: CGFloat, previousPoint: CGPoint ) -> CGPoint
-    {
+    func distanceTravelled(directionFacing: Int,numberOfBlocksToMove: CGFloat, previousPoint: CGPoint ) -> CGPoint {
         var calculatedPoint = previousPoint
         switch directionFacing {
         case directions.north.rawValue:
@@ -111,8 +109,7 @@ class ViewController: NSViewController {
         return calculatedPoint
     }
     
-    func parse(theInstruction: String) -> (commandToMove: Character, numberOfBlocksToMove: Int)
-    {
+    func parse(theInstruction: String) -> (commandToMove: Character, numberOfBlocksToMove: Int) {
         let commandToMove: Character = theInstruction[theInstruction.startIndex]
         guard let numberOfBlocksToMove = Int(theInstruction.substring(from: theInstruction.index(after: theInstruction.startIndex))) else {
             print("Error: Failed to convert the string to integer")
