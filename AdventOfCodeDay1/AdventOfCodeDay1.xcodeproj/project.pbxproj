@@ -157,7 +157,6 @@
 					5B50059A1EFA887C0073F2D9 = {
 						CreatedOnToolsVersion = 8.3.2;
 						ProvisioningStyle = Automatic;
-						TestTargetID = 5B5005891EFA887C0073F2D9;
 					};
 				};
 			};
@@ -366,14 +365,12 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				BUNDLE_LOADER = "$(TEST_HOST)";
 				COMBINE_HIDPI_IMAGES = YES;
 				INFOPLIST_FILE = AdventOfCodeDay1Tests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = Exilant.AdventOfCodeDay1Tests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/AdventOfCodeDay1.app/Contents/MacOS/AdventOfCodeDay1";
 			};
 			name = Debug;
 		};
@@ -381,14 +378,12 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				BUNDLE_LOADER = "$(TEST_HOST)";
 				COMBINE_HIDPI_IMAGES = YES;
 				INFOPLIST_FILE = AdventOfCodeDay1Tests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = Exilant.AdventOfCodeDay1Tests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/AdventOfCodeDay1.app/Contents/MacOS/AdventOfCodeDay1";
 			};
 			name = Release;
 		};
@@ -411,6 +406,7 @@
 				5B5005A61EFA887C0073F2D9 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		5B5005A71EFA887C0073F2D9 /* Build configuration list for PBXNativeTarget "AdventOfCodeDay1Tests" */ = {
 			isa = XCConfigurationList;
@@ -419,6 +415,7 @@
 				5B5005A91EFA887C0073F2D9 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
