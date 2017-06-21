@@ -2,12 +2,12 @@
 <Workspace
    version = "1.0">
    <FileRef
+      location = "group:AdventOfCodeDay1/AdventOfCodeDay1.xcodeproj">
+   </FileRef>
+   <FileRef
       location = "group:AdventOfCodeDay10/AdventOfCodeDay10.xcodeproj">
    </FileRef>
    <FileRef
       location = "group:AdventOfCodeDay4/AdventOfCodeDay4.xcodeproj">
-   </FileRef>
-   <FileRef
-      location = "group:AdventOfCodeDay1/AdventOfCodeDay1.xcodeproj">
    </FileRef>
 </Workspace>
