@@ -12,7 +12,9 @@ class ViewController: NSViewController {
     var botsThatAreProcessed = Array<RobotModel>()
     var botsToBeProcessed = [Int: RobotModel]()
     var outputBin = Array<OutputBinModel>()
-    
+    @IBOutlet weak var part1ResultTextField: NSTextField?
+    @IBOutlet weak var part2ResultTextField: NSTextField?
+
     override func viewDidLoad() {
         super.viewDidLoad()
         if let filePath = Bundle.main.path(forResource: "Input", ofType: "txt") {
@@ -27,11 +29,13 @@ class ViewController: NSViewController {
                 let inputValue = (highValue: 61,lowValue: 17)
                 let responsibleBot = findBotResponsibleForComparing(highvalue: inputValue.highValue, lowValue: inputValue.lowValue)
                 print("The number of the bot that is responsible for comparing value-\(String(inputValue.highValue)) microchips with value-\(String(inputValue.lowValue)) microchips is ",responsibleBot);
+                part1ResultTextField?.stringValue = responsibleBot.description
                 
                 //multiply the values prsent in output bin 0, 1, and 2
                 let part2Input = [0,1,2]
                 let multipliedValueOfBins = mutiplyValuesPresentIn(bins: part2Input)
                 print("On multiplying the values of output bin at \(String(describing: part2Input)) is",multipliedValueOfBins)
+                part2ResultTextField?.stringValue = multipliedValueOfBins.description
             }
             
         }

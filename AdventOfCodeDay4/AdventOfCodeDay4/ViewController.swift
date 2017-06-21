@@ -10,8 +10,9 @@ import Cocoa
 
 class ViewController: NSViewController {
     
-    @IBOutlet weak var textField: NSTextField!
-    @IBOutlet weak var resultField: NSTextField!
+    @IBOutlet weak var part1ResultTextField: NSTextField?
+    @IBOutlet weak var part2ResultTextField: NSTextField?
+
     override func viewDidLoad() {
         super.viewDidLoad()
         if let filePath = Bundle.main.path(forResource: "Input", ofType: "txt") {
@@ -20,9 +21,12 @@ class ViewController: NSViewController {
             
             let sumOfSectorId = findRealRoomsAndAddSectorIdFor(parsedStrings: pharsedInput)
             print("Sum of sector id for real rooms is ",sumOfSectorId)
+            part1ResultTextField?.stringValue = sumOfSectorId.description
             
             let sectorIdForNorthPole = findRoomFrom(parsedStrings: pharsedInput, whoseRealNameContains: "northpole")
             print("Sector id of the room with objects stored in northpole is \(sectorIdForNorthPole)")
+            part2ResultTextField?.stringValue = sectorIdForNorthPole.description
+
             
         }
         // Do any additional setup after loading the view.
