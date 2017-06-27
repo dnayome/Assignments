@@ -52,7 +52,7 @@ class AdventOfCodeDay1Tests: XCTestCase {
     
     func testDistanceRevisited() {
         let metExpectation = XCTestExpectation()
-        let distanceRevisited = self.testViewController.findRevisitedPath(inputList: ["R8","R4","R4", "R8"])
+        let distanceRevisited = self.testViewController.findRevisitedPath(fromInputList: ["R8","R4","R4", "R8"])
         print("Distance revisited is ", distanceRevisited)
         XCTAssert(distanceRevisited == 4)
         
@@ -63,7 +63,7 @@ class AdventOfCodeDay1Tests: XCTestCase {
         // This is an example of a functional test case.
         // Use XCTAssert and related functions to verify your tests produce the correct results.
         let metExpectation = XCTestExpectation()
-        let distanceFound = self.testViewController.calculateDistance(inputList: ["R2","L3","L4", "L4"])
+        let distanceFound = self.testViewController.calculateDistance(fromInputList: ["R2","L3","L4", "L4"])
         print("Distance travelled is",distanceFound," blocks")
         
         XCTAssert(distanceFound == 3)
