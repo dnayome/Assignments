@@ -63,7 +63,7 @@ class ViewController: NSViewController {
         var point: CGPoint = CGPoint()
         var visited: Set = Set<String>()
         
-        outer: for instruction in fromInputList {
+        for instruction in fromInputList {
             let commandReceived = parse(theInstruction: instruction)
             
             directionFacing = findDirectionFacedAfterExecuting(commandToMove: commandReceived.commandToMove, currentDirection: directionFacing)
@@ -74,7 +74,9 @@ class ViewController: NSViewController {
                 point = calculatedLocation
                 if !visited.contains(newLocation) {
                     visited.insert(newLocation)
-                } else { break outer}
+                } else {
+                    return Int(abs(point.x) + abs(point.y))
+                }
             }
         }
         return Int(abs(point.x) + abs(point.y))
