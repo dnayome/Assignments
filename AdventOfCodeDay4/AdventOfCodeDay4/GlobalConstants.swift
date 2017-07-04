@@ -16,5 +16,6 @@ struct Constants {
     static let parsingDelimiter = "-"
     static let openSquareBrace = "["
     static let closedSquareBrace = "]"
+    static let checkSumCount = 5
 
 }

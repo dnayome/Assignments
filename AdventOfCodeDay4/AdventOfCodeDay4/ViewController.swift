@@ -17,13 +17,12 @@ class ViewController: NSViewController {
         super.viewDidLoad()
         if let filePath = Bundle.main.path(forResource: "Input", ofType: "txt") {
             let arrayOfFileContents = readContentsOfFile(fromPath: filePath)
-            let pharsedInput = parseInputToStrings(InputList: arrayOfFileContents)
             
-            let sumOfSectorId = findRealRoomsAndAddSectorIdFor(parsedStrings: pharsedInput)
+            let sumOfSectorId = findRealRoomsAndAddSectorIdFor(parsedStrings: arrayOfFileContents)
             print("Sum of sector id for real rooms is ",sumOfSectorId)
             part1ResultTextField?.stringValue = sumOfSectorId.description
             
-            let sectorIdForNorthPole = findRoomFrom(parsedStrings: pharsedInput, whoseRealNameContains: "northpole")
+            let sectorIdForNorthPole = findRoomFrom(parsedStrings: arrayOfFileContents, whoseRealNameContains: "northpole")
             print("Sector id of the room with objects stored in northpole is \(sectorIdForNorthPole)")
             part2ResultTextField?.stringValue = sectorIdForNorthPole.description
 
@@ -34,96 +33,94 @@ class ViewController: NSViewController {
     
     //MARK: Methods to solve Part 1 and Part 2 of the puzzle
     //Function is used to find out which is a real room and add the sector ids of the real rooms and return the total sector id
-    func findRealRoomsAndAddSectorIdFor(parsedStrings: [Array<Any>]) -> Int {
+    func findRealRoomsAndAddSectorIdFor(parsedStrings: [String]) -> Int {
         var sumOfSectorId = 0
+        
         for stringPharsed in parsedStrings {
-            //Get the last element
-            let lastElement: String = stringPharsed[stringPharsed.index(before: stringPharsed.endIndex)] as! String
-            //parse the string to get sector Id
-            let sectorId = lastElement.components(separatedBy: Constants.openSquareBrace)[0]
-            //parse the string to get check sum
-            var checkSum = lastElement.components(separatedBy: Constants.openSquareBrace)[1]
-            checkSum = checkSum.components(separatedBy: Constants.closedSquareBrace)[0]
-            
-            //Call a function to get the number of times the character exists.
-            var charactersCountArray = getCountOfCharacters(arrayOfStrings: stringPharsed as! [String])
-            var checkSumBuilt = Constants.emptyString
-            var lengthOfCheckSum = 1
-            
-            //Adding a do while loop to check for real room and proceed, intially the value is made true to execute the first parsed input
-            while lengthOfCheckSum > 0 {
-                var filteredChars = filterCharactersWhichHaveGreaterValue(charactersDict: charactersCountArray)
-                filteredChars.sort()//sort the array to make it alphabetical as the corect checksum will be in alphabetical form
+
+            if stringPharsed != "" {
+                let sectorAndCheckSum = String(stringPharsed.characters.suffix(10))
+                let encodedData = String(stringPharsed.characters.prefix(stringPharsed.characters.count - 10))
                 
-                for chars in filteredChars {
-                    checkSumBuilt =  checkSumBuilt + chars
-                    guard let indexToRemove = charactersCountArray.index(forKey: chars) else {
-                        print("Error: Unable to get index !!")
-                        break
+                if let indexOfOpenBracket = sectorAndCheckSum.characters.index(of: Character(Constants.openSquareBrace)), let indexOfCloseBracket = sectorAndCheckSum.characters.index(of: Character(Constants.closedSquareBrace)) {
+                    let sectorId = String(sectorAndCheckSum.characters.prefix(upTo: indexOfOpenBracket)) //get the sector id
+                    var checkSum = String(sectorAndCheckSum.characters.prefix(upTo: indexOfCloseBracket))
+                    checkSum = String(checkSum.characters.suffix(Constants.checkSumCount)) // get the checksum
+                    
+                    //Call a function to get the number of times the character exists.
+                    var charactersCountArray = getCountOfCharacters(fromString: encodedData)
+                    var checkSumBuilt = Constants.emptyString
+                    var lengthOfCheckSum = 1
+                    
+                    //Adding a do while loop to check for real room and proceed, intially the value is made true to execute the first parsed input
+                    while lengthOfCheckSum > 0 {
+                        var filteredChars = filterCharactersWhichHaveGreaterValue(charactersDict: charactersCountArray)
+                        filteredChars.sort()//sort the array to make it alphabetical as the corect checksum will be in alphabetical form
+                        
+                        for chars in filteredChars {
+                            checkSumBuilt =  checkSumBuilt + chars
+                            guard let indexToRemove = charactersCountArray.index(forKey: chars) else {
+                                print("Error: Unable to get index !!")
+                                break
+                            }
+                            charactersCountArray.remove(at: indexToRemove)
+                            if checkSumBuilt.characters.count == Constants.checkSumCount {
+                                lengthOfCheckSum = 0
+                                break
+                            }
+                        }
                     }
-                    charactersCountArray.remove(at: indexToRemove)
-                    if checkSumBuilt.characters.count == 5 {
-                        lengthOfCheckSum = 0
-                        break
+                    if checkSum == checkSumBuilt {
+                        guard let sectorIdConverted = Int(sectorId) else {
+                            print("Unable to convert to Int")
+                            break
+                        }
+                        sumOfSectorId = sumOfSectorId + sectorIdConverted
                     }
                 }
-            }
-            if checkSum == checkSumBuilt {
-                guard let sectorIdConverted = Int(sectorId) else {
-                    print("Unable to convert to Int")
-                    break
-                }
-                sumOfSectorId = sumOfSectorId + sectorIdConverted
             }
         }
         return sumOfSectorId
     }
     
     //To solve second part of the puzzle
-    func findRoomFrom(parsedStrings: [Array<Any>],whoseRealNameContains: String) -> Int {
+    func findRoomFrom(parsedStrings: [String],whoseRealNameContains: String) -> String {
         for words in parsedStrings {
-            //Get the last element
-            let lastElement: String = words[words.index(before: words.endIndex)] as! String
-            //parse the string to get sector Id
-            let sectorId = Int(lastElement.components(separatedBy: Constants.openSquareBrace)[0])
-            //parse the string to get check sum
-            let shiftBy: Int = sectorId! % Constants.countOfAlphabets
-            var convertedString = Constants.emptyString
-            
-            for index in 0..<words.count-1 {
-                let element:String = words[index] as! String
-                for items in element.unicodeScalars {
-                    var unicodeValue = Int(items.value)
-                    unicodeValue = unicodeValue + shiftBy
-                    if unicodeValue > Constants.asciiValueAboveCharactersRange {
-                        unicodeValue -= Constants.countOfAlphabets
+            if words != Constants.emptyString {
+                //Get the last element
+                let sectorAndCheckSum = String(words.characters.suffix(10))
+                let encodedData = String(words.characters.prefix(words.characters.count - 10))
+                
+                if let indexOfOpenBracket = sectorAndCheckSum.characters.index(of: Character(Constants.openSquareBrace)) {
+                    let sectorId = String(sectorAndCheckSum.characters.prefix(upTo: indexOfOpenBracket)) //get the sector id
+                    //parse the string to get check sum
+                    let shiftBy: Int = Int(sectorId)! % Constants.countOfAlphabets
+                    var convertedString = Constants.emptyString
+                    
+                    for item in encodedData.unicodeScalars {
+                        if item != "-" {
+                            var unicodeValue = Int(item.value)
+                            unicodeValue = unicodeValue + shiftBy
+                            if unicodeValue > Constants.asciiValueAboveCharactersRange {
+                                unicodeValue -= Constants.countOfAlphabets
+                            }
+                            let c = Character(UnicodeScalar(unicodeValue)!)
+                            convertedString.append(c)
+                        } else {
+                            convertedString.append(Constants.stringWithSpace)
+                        }
                     }
-                    let c = Character(UnicodeScalar(unicodeValue)!)
-                    convertedString.append(c)
+                    if (convertedString.contains(whoseRealNameContains)) {
+                        return sectorId
+                    }
                 }
-                convertedString.append(Constants.stringWithSpace)
-            }
-            if (convertedString.contains(whoseRealNameContains)) {
-                return sectorId!
             }
         }
-        return 0
+        return Constants.emptyString
     }
 
 
-    //MARK: Methods to read and parse the input
-    func parseInputToStrings(InputList: [String]) -> Array<Array<String>> {
-        var pharsedArray = Array<Array<String>>()
-        for item in InputList {
-            if item != Constants.emptyString {
-                let componentsInItem:Array = item.components(separatedBy: Constants.parsingDelimiter)
-                pharsedArray.append(componentsInItem)
-            }
-        }
-        return pharsedArray;
-    }
-    
-    //Function to read the contents of file, and returns an array of strings
+    //MARK: Methods to read the contents of file
     func readContentsOfFile(fromPath: String) -> [String] {
         do {
             let content = try String(contentsOfFile:fromPath, encoding: String.Encoding.utf8)
@@ -138,25 +135,17 @@ class ViewController: NSViewController {
     
     //MARK: Methods to evaluate the instructions
     //Function is used to get the encrypted name and check number of times a character is repated and store all of them in array
-    func getCountOfCharacters(arrayOfStrings: [String]) -> [String:Int] {
+    func getCountOfCharacters(fromString: String) -> [String:Int] {
         var dictionaryToFrame:[String:Int] = [:]
-        for index in 0..<arrayOfStrings.count-1 {
-            let element = arrayOfStrings[index]
-            
-            for newChar in element.characters {
-                let keyExists = dictionaryToFrame[String(newChar)] == nil
-                if keyExists {
-                    dictionaryToFrame[String(newChar)] = 1
-                } else {
-                    guard let valueOfCharacter = dictionaryToFrame[String(newChar)] else {
-                        print("Failed to retreive data.. !!")
-                        break
-                    }
-                    dictionaryToFrame[String(newChar)] = valueOfCharacter + 1
+        for item in fromString.characters {
+            if item != "-" {
+                if !dictionaryToFrame.keys.contains(String(item)) {
+                    let occurrencies = fromString.characters.filter { $0 == item }.count
+                    dictionaryToFrame[String(item)] = occurrencies
                 }
             }
         }
-        return dictionaryToFrame
+       return dictionaryToFrame
     }
     
     func filterCharactersWhichHaveGreaterValue(charactersDict : [String:Int]) -> [String]{
@@ -178,6 +167,6 @@ class ViewController: NSViewController {
         }
         return filteredChars
     }
-
 }
+
 

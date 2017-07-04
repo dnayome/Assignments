@@ -32,34 +32,19 @@ class AdventOfCodeDay4Tests: XCTestCase {
             metExpectation.fulfill()
         }
     }
-    
-    func testParsingInput() {
-        let metExpectation = XCTestExpectation()
-        let identifier = Bundle.init(identifier: "Exilant.AdventOfCodeDay4Tests")
-        
-        if let filePath = identifier?.path(forResource: "Input", ofType: "txt") {
-            let arrayOfFileContents = testViewController.readContentsOfFile(fromPath: filePath)
-            
-            XCTAssertTrue(arrayOfFileContents.count > 0)
-            let parsedArray = testViewController.parseInputToStrings(InputList: arrayOfFileContents)
-            XCTAssertTrue(parsedArray.count > 0)
-        }
-        metExpectation.fulfill()
-    }
+
 
     
     func testFindSectorWhichIsStoredInNorthPole() {
         let metExpectation = XCTestExpectation()
-        let parsedStrings = testViewController.parseInputToStrings(InputList: ["aaaaa-bbb-z-y-x-123[abxyz]", "a-b-c-d-e-f-g-h-987[abcde]", "not-a-real-room-404[oarel]", "totally-real-room-200[decoy]", "qzmt-zixmtkozy-ivhz-343"])
-        let sectorId = testViewController.findRoomFrom(parsedStrings: parsedStrings, whoseRealNameContains: "very encrypted")
-        XCTAssert(sectorId == 343)
+        let sectorId = testViewController.findRoomFrom(parsedStrings: ["aaaaa-bbb-z-y-x-123[abxyz]", "a-b-c-d-e-f-g-h-987[abcde]", "not-a-real-room-404[oarel]", "totally-real-room-200[decoy]", "qzmt-zixmtkozy-ivhz-343[poyre]"], whoseRealNameContains: "very encrypted")
+        XCTAssert(sectorId == "343")
         metExpectation.fulfill()
     }
     
     func testFindRealRommAndAddSector() {
         let metExpectation = XCTestExpectation()
-        let parsedStrings = testViewController.parseInputToStrings(InputList: ["aaaaa-bbb-z-y-x-123[abxyz]", "a-b-c-d-e-f-g-h-987[abcde]", "not-a-real-room-404[oarel]", "totally-real-room-200[decoy]"])
-        let sumOfSectors = testViewController.findRealRoomsAndAddSectorIdFor(parsedStrings: parsedStrings)
+        let sumOfSectors = testViewController.findRealRoomsAndAddSectorIdFor(parsedStrings: ["aaaaa-bbb-z-y-x-123[abxyz]", "a-b-c-d-e-f-g-h-987[abcde]", "not-a-real-room-404[oarel]", "totally-real-room-200[decoy]"])
         XCTAssert(sumOfSectors == 1514)
         metExpectation.fulfill()
     }
