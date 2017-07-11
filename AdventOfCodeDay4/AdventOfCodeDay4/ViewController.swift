@@ -18,17 +18,16 @@ class ViewController: NSViewController {
         if let filePath = Bundle.main.path(forResource: "Input", ofType: "txt") {
             let arrayOfFileContents = readContentsOfFile(fromPath: filePath)
             
+            /*Solving Part 1 Of the puzzle*/
             let sumOfSectorId = findRealRoomsAndAddSectorIdFor(parsedStrings: arrayOfFileContents)
             print("Sum of sector id for real rooms is ",sumOfSectorId)
             part1ResultTextField?.stringValue = sumOfSectorId.description
             
+            /*Solving Part 2 Of the puzzle*/
             let sectorIdForNorthPole = findRoomFrom(parsedStrings: arrayOfFileContents, whoseRealNameContains: "northpole")
             print("Sector id of the room with objects stored in northpole is \(sectorIdForNorthPole)")
             part2ResultTextField?.stringValue = sectorIdForNorthPole.description
-
-            
         }
-        // Do any additional setup after loading the view.
     }
     
     //MARK: Methods to solve Part 1 and Part 2 of the puzzle
@@ -36,16 +35,17 @@ class ViewController: NSViewController {
     func findRealRoomsAndAddSectorIdFor(parsedStrings: [String]) -> Int {
         var sumOfSectorId = 0
         
-        for stringPharsed in parsedStrings {
-
-            if stringPharsed != "" {
-                let sectorAndCheckSum = String(stringPharsed.characters.suffix(10))
-                let encodedData = String(stringPharsed.characters.prefix(stringPharsed.characters.count - 10))
+        for statement in parsedStrings {
+            if statement != "" {
+                let sectorAndCheckSum = String(statement.characters.suffix(10))
+                let encodedData = String(statement.characters.prefix(statement.characters.count - 10))
                 
                 if let indexOfOpenBracket = sectorAndCheckSum.characters.index(of: Character(Constants.openSquareBrace)), let indexOfCloseBracket = sectorAndCheckSum.characters.index(of: Character(Constants.closedSquareBrace)) {
-                    let sectorId = String(sectorAndCheckSum.characters.prefix(upTo: indexOfOpenBracket)) //get the sector id
+                    //get the sector id
+                    let sectorId = String(sectorAndCheckSum.characters.prefix(upTo: indexOfOpenBracket))
+                    // get the checksum
                     var checkSum = String(sectorAndCheckSum.characters.prefix(upTo: indexOfCloseBracket))
-                    checkSum = String(checkSum.characters.suffix(Constants.checkSumCount)) // get the checksum
+                    checkSum = String(checkSum.characters.suffix(Constants.checkSumCount))
                     
                     //Call a function to get the number of times the character exists.
                     var charactersCountArray = getCountOfCharacters(fromString: encodedData)

@@ -17,10 +17,12 @@ class ViewController: NSViewController {
         if let filePath = Bundle.main.path(forResource: "Input", ofType: "txt") {
             let arrayOfFileContents = readContentsOfFile(fromPath: filePath)
             
+            /*Solving Part 1 Of the puzzle*/
             let distance = calculateDistance(fromInputList: arrayOfFileContents)
             print("Distance from landing point to the headquarters is \(distance) blocks")
             part1ResultTextField?.stringValue = String(distance)
             
+            /* Solving Part2 of the puzzle */
             let revisitedDistance = findRevisitedPath(fromInputList: arrayOfFileContents)
             print("Distance revisited is \(revisitedDistance)")
             part2ResultTextField?.stringValue = String(revisitedDistance)
@@ -51,7 +53,7 @@ class ViewController: NSViewController {
             
             directionFacing = findDirectionFacedAfterExecuting(commandToMove: commandReceived.commandToMove, currentDirection: directionFacing)
             
-            let calculatedValue = distanceTravelled(directionFacing: directionFacing, numberOfBlocksToMove: CGFloat(commandReceived.numberOfBlocksToMove), previousPoint: point)
+            let calculatedValue = distanceTravelled(directionFacing: directions(rawValue: directionFacing)! , numberOfBlocksToMove: CGFloat(commandReceived.numberOfBlocksToMove), previousPoint: point)
             point.x = calculatedValue.x
             point.y = calculatedValue.y
         }
@@ -69,7 +71,7 @@ class ViewController: NSViewController {
             directionFacing = findDirectionFacedAfterExecuting(commandToMove: commandReceived.commandToMove, currentDirection: directionFacing)
             
             for _ in 0..<Int(commandReceived.numberOfBlocksToMove) {
-                let calculatedLocation  = distanceTravelled(directionFacing: directionFacing, numberOfBlocksToMove: 1, previousPoint: point)
+                let calculatedLocation  = distanceTravelled(directionFacing: directions(rawValue: directionFacing)!, numberOfBlocksToMove: 1, previousPoint: point)
                 let newLocation = String(describing: calculatedLocation.x) + Constants.stringSeparator + String(describing: calculatedLocation.y)
                 point = calculatedLocation
                 if !visited.contains(newLocation) {
@@ -83,7 +85,7 @@ class ViewController: NSViewController {
     }
     
     //MARK: Evaluation methods for solving the puzzles
-    func findDirectionFacedAfterExecuting(commandToMove: Character, currentDirection: Int) -> Int {
+    func findDirectionFacedAfterExecuting(commandToMove: Character, currentDirection: Int) -> Int{
         var directionFromInstruction = currentDirection
         if commandToMove == Character(Constants.instructionTakeLeft){
             directionFromInstruction -= 1;
@@ -94,18 +96,17 @@ class ViewController: NSViewController {
         return directionFromInstruction
     }
     
-    func distanceTravelled(directionFacing: Int,numberOfBlocksToMove: CGFloat, previousPoint: CGPoint ) -> CGPoint {
+    func distanceTravelled(directionFacing: directions,numberOfBlocksToMove: CGFloat, previousPoint: CGPoint ) -> CGPoint {
         var calculatedPoint = previousPoint
         switch directionFacing {
-        case directions.north.rawValue:
+        case  .north:
             calculatedPoint.y = calculatedPoint.y + numberOfBlocksToMove
-        case directions.east.rawValue:
+        case .east:
             calculatedPoint.x = calculatedPoint.x + numberOfBlocksToMove
-        case directions.south.rawValue:
+        case .south:
             calculatedPoint.y = calculatedPoint.y - numberOfBlocksToMove
-        case directions.west.rawValue:
+        case .west:
             calculatedPoint.x = calculatedPoint.x - numberOfBlocksToMove
-        default: break
         }
         return calculatedPoint
     }

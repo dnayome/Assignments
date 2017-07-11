@@ -8,13 +8,13 @@
 
 import Cocoa
 
-open class OutputBinModel: NSObject {
+class OutputBinModel: NSObject {
     var binId: Int = -1
     var binValue: Int = -1
     
 }
 
-open class RobotModel: NSObject {
+class RobotModel: NSObject {
     var botId: Int = 0
     var botLowValue: Int = -1
     var botHighvalue: Int = -1
